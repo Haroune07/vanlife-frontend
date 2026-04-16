@@ -1,11 +1,9 @@
-import { Link, useParams } from "react-router-dom"
-import { getVan } from "../../assets/mock-data"
+import { Link, useLoaderData } from "react-router-dom"
 import Van from "/src/components/Van"
 import "./VanDetail.css"
 
 export default function VanDetail() {
-  const vanId = useParams().id
-  const van = getVan(vanId)
+  const van = useLoaderData()
   return (
     <div className="van-detail-container">
       <Link

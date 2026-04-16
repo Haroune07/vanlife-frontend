@@ -1,5 +1,8 @@
 import { useState } from "react"
-import { Route, BrowserRouter, Routes } from "react-router-dom"
+import { Route, RouterProvider } from "react-router-dom"
+import MainLayout from "./layouts/MainLayout/MainLayout"
+import { createBrowserRouter, createRoutesFromElements } from "react-router-dom"
+import HostLayout from "./layouts/HostLayout/HostLayout"
 
 // PAGES
 import {
@@ -17,60 +20,39 @@ import {
 
 
 // Components
-import Header from "./components/ui/Header"
-import Footer from "./components/ui/Footer"
 
 // Mock data
 import { vansData, usersData } from "./assets/mock-data"
+import vansLoader from "./loaders/vans.loader"
+import vanDetailLoader from "./loaders/van-detail.loader"
 
 function App() {
   const [user] = useState(usersData[0])
   const [vans] = useState(vansData)
   const hostVans = vans.filter(van => van.hostId === user.id)
 
-  return (
-    <BrowserRouter>
-      <div className="site-wrapper">
-        <Header user={user} />
-        <main>
-          <Routes>
-            {/* ROUTE HOME */}
-            <Route path="/" element={<Home />} />
 
-            {/* ROUTE LOGIN */}
-            <Route path="/login" element={<Login />} />
+  const router = createBrowserRouter(createRoutesFromElements(
+    <Route path="/" element={<MainLayout vans={vans} user={user} />} >
+      <Route index element={<Home />} />
+      <Route path="login" element={<Login />} />
+      <Route path="logout" />
+      <Route path="register" element={<Register />} />
+      <Route path="about" element={<About />} />
+      <Route path="vans" element={<Vans />} loader={vansLoader} />
+      <Route path="vans/:id" element={<VanDetail />} loader={vanDetailLoader} />
 
-            {/* ROUTE REGISTER */}
-            <Route path="/register" element={<Register />} />
+      <Route path="/host" element={<HostLayout user={user} hostVans={hostVans} />}>
+        <Route index element={<Dashboard />} />
+        <Route path="income" element={<Income />} />
+        <Route path="reviews" element={<Reviews />} />
+      </Route>
 
-            {/* ROUTE ABOUT */}
-            <Route path="/about" element={<About />} />
+      <Route path="*" element={<NotFound />} />
+    </Route >
+  ))
 
-            {/* ROUTE VANS */}
-            <Route path="/vans" element={<Vans vans={vans} />} />
+  return <RouterProvider router={router} />
 
-            {/* ROUTE VAN DETAIL */}
-            <Route path="/vans/:id" element={<VanDetail />} />
-
-            {/* ROUTE HOST DASHBOARD */}
-            <Route
-              path="/host/dashboard"
-              element={<Dashboard hostVans={hostVans} user={user} />}
-            />
-
-            {/* ROUTE HOST INCOME */}
-            <Route path="/host/income" element={<Income />} />
-
-            {/* ROUTE HOST REVIEWS */}
-            <Route path="/host/reviews" element={<Reviews />} />
-
-            {/* ROUTE PAR DÉFAUT (SI AUCUNE ROUTE NE CORRESPOND) */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </main>
-        <Footer />
-      </div>
-    </BrowserRouter>
-  )
 }
 export default App

@@ -1,23 +1,12 @@
-import { Link, NavLink } from "react-router-dom"
+import { Link, NavLink, useOutletContext } from "react-router-dom"
 import { BsStarFill } from "react-icons/bs"
 import HostVansList from "../../components/HostVanList"
 import "./Dashboard.css"
 
-export default function Dashboard({ hostVans, user }) {
-
+export default function Dashboard() {
+  const {user, hostVans} = useOutletContext()
   return (
     <>
-      <nav className="host-nav">
-        <Link to="/host/dashboard" className="nav-button">
-          Dashboard
-        </Link>
-        <Link to="/host/income" className="nav-button">
-          Income
-        </Link>
-        <Link to="/host/reviews" className="nav-button">
-          Reviews
-        </Link>
-      </nav>
 
       <section className="host-dashboard-earnings">
         <div className="info">
