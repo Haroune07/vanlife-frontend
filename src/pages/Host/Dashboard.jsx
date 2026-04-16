@@ -1,10 +1,10 @@
-import { Link, NavLink, useOutletContext } from "react-router-dom"
+import { Link, NavLink, useLoaderData, useOutletContext } from "react-router-dom"
 import { BsStarFill } from "react-icons/bs"
 import HostVansList from "../../components/HostVanList"
 import "./Dashboard.css"
 
 export default function Dashboard() {
-  const {user, hostVans} = useOutletContext()
+  const {user, hostVans} = useLoaderData()
   return (
     <>
 
